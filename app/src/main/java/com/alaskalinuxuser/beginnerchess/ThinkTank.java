@@ -32,7 +32,7 @@ public class ThinkTank {
         list=sortMoves(list);
         player=1-player;//either 1 or 0
         for (int i=0;i<list.length();i+=5) {
-            Log.i("WJH", list);
+            // Debugging only //Log.i("WJH", list);
             makeMove(list.substring(i,i+5));
             flipBoard();
             String returnString=alphaBeta(depth-1, beta, alpha, list.substring(i,i+5), player);
