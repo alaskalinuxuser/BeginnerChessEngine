@@ -5,3 +5,7 @@ A simple, open source chess engine written in java by a beginner. https://theala
 
  * Now I am attempting to edit it and take my own meager skills as a programmer to the next level.
 
+ * This repo includes the engine within an app. The app currently only allows play of engine vs. engine, to showcase and test the engine itself. My plan is to allow for a "modular" design that others can "drop" into their chess apps that they create (or ones I make myself).
+
+![ScreenShot](https://github.com/alaskalinuxuser/BeginnerChessEngine/blob/master/device-2017-09-29-110311.png)
+
