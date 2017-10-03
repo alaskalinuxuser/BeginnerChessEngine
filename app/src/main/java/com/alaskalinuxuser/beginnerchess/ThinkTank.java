@@ -93,7 +93,7 @@ public class ThinkTank {
         if (move.length() < 4 || move.charAt(0)=='-') {
             Log.i("WJH", "Checkmate.");
         } else {
-            Log.i("WJH", move);
+            // Debuging only //Log.i("WJH", move);
             if (move.charAt(4) != 'P') {
                 chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
                 chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
@@ -482,11 +482,14 @@ public class ThinkTank {
             }
         }
         //pawn
-        if (kingPositionC>15) {
-
-
-
-        }
+                    try {
+                        if ("p".equals(chessBoard[kingPositionC/8+(-1)][(kingPositionC%8)+1])) {
+                            return false;
+                        }
+                        if ("p".equals(chessBoard[kingPositionC/8+(-1)][kingPositionC%8+(-1)])) {
+                            return false;
+                        }
+                    } catch (Exception e) {}
         //king
         for (int i=-1; i<=1; i++) {
                 for (int j=-1; j<=1; j++) {

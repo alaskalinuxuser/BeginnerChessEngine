@@ -39,8 +39,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.alphaBeta;
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.flipBoard;
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.makeMove;
@@ -63,14 +61,14 @@ public class MainActivity extends AppCompatActivity {
             {"R","N","B","Q","K","B","N","R"}
 
 
-            /*{"k"," "," "," "," "," "," "," "},
+            /*{" "," "," "," ","k"," "," "," "},
             {" "," "," "," "," "," "," "," "},
-            {" "," "," "," "," "," "," "," "},
-            {" "," "," "," "," "," "," "," "},
-            {" "," "," "," "," "," "," "," "},
-            {" "," "," "," "," "," ","p","p"},
-            {" "," "," "," "," ","p"," "," "},
-            {" "," "," "," "," "," "," ","K"}*/
+            {" "," "," ","p","p","p","p","p"},
+            {" "," "," ","p"," "," "," ","p"},
+            {" "," "," ","p"," ","K"," "," "},
+            {" "," "," ","p"," "," "," ","p"},
+            {" "," "," ","p","p","p","p","p"},
+            {" "," "," "," "," "," "," "," "} */
 
     };
 
@@ -92,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
             x48,x49,x50,x51,x52,x53,x54,x55,x56,x57,x58,x59,x60,x61,x62,x63};
 
     static Button nextMoveB,pB,mB;
-    static TextView pN;
+    static TextView pN, tVms;
+    static long moveTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         pB = (Button)findViewById(R.id.plusB);
         mB = (Button)findViewById(R.id.minusB);
         pN = (TextView)findViewById(R.id.plyNum);
+        tVms = (TextView)findViewById(R.id.timeText);
 
         pN.setText(String.valueOf(globalDepth));
 
@@ -142,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
         // draw the board.
         drawBoardPieces();
 
-        //Debugging purposes
-        Log.i("WJH", String.valueOf(kingPositionC));
+        //Debugging purposes //Log.i("WJH", String.valueOf(kingPositionC));
 
     } // End on create.
 
@@ -183,12 +182,13 @@ public class MainActivity extends AppCompatActivity {
                     long startTime=System.currentTimeMillis();
                     makeMove(alphaBeta(globalDepth, 1000000, -1000000, "", 0));
                     long endTime=System.currentTimeMillis();
-                    Log.i ("WJH", "That took "+(endTime-startTime)+" milliseconds");
+                    moveTime=endTime-startTime;
                     flipBoard();
                 }
+                /*
                 for (int i=0;i<8;i++) {
                     Log.i ("WJH", Arrays.toString(chessBoard[i]));
-                }
+                } */ // Debuging purposes only....
 
                 // Have an exception clause so you don't crash.
             } catch (Exception e) {
@@ -230,6 +230,8 @@ public class MainActivity extends AppCompatActivity {
 
             // rename the move button.
             nextMoveB.setText("Move");
+
+            tVms.setText(String.valueOf(moveTime) + " ms");
 
         }
 
