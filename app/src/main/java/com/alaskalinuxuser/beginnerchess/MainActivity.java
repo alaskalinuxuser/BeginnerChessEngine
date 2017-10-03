@@ -90,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
             x48,x49,x50,x51,x52,x53,x54,x55,x56,x57,x58,x59,x60,x61,x62,x63};
 
     static Button nextMoveB,pB,mB;
-    static TextView pN, tVms;
+    static TextView pN, tVms, mCtv;
+    static String moveOptions;
     static long moveTime;
 
     @Override
@@ -110,10 +111,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        moveOptions = "Move Options";
         pB = (Button)findViewById(R.id.plusB);
         mB = (Button)findViewById(R.id.minusB);
         pN = (TextView)findViewById(R.id.plyNum);
         tVms = (TextView)findViewById(R.id.timeText);
+        mCtv = (TextView)findViewById(R.id.moveChoiceText);
+
+        mCtv.setText(moveOptions);
 
         pN.setText(String.valueOf(globalDepth));
 
@@ -177,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Try this.
             try {
-                Log.i("WJH", sortMoves(posibleMoves()));
+                moveOptions=sortMoves(posibleMoves());
                 if (humanAsWhite==0) {
                     long startTime=System.currentTimeMillis();
                     makeMove(alphaBeta(globalDepth, 1000000, -1000000, "", 0));
@@ -232,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
             nextMoveB.setText("Move");
 
             tVms.setText(String.valueOf(moveTime) + " ms");
+            mCtv.setText(moveOptions);
 
         }
 
