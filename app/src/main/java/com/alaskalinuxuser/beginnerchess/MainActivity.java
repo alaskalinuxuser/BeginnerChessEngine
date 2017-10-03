@@ -21,6 +21,10 @@ package com.alaskalinuxuser.beginnerchess;
  * comes from his tutorial, and I am just finding a way to add it to a playable format for Android.
  */
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,8 +40,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Arrays;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.alphaBeta;
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.flipBoard;
@@ -50,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     static int kingPositionC, kingPositionL, globalDepth=1, humanAsWhite=0;
     static boolean white=true;
-    static String chessBoard[][]={
-            /*{"r","n","b","q","k","b","n","r"},
+    static String chessBoard[][]= new String[][] {
+            {"r","n","b","q","k","b","n","r"},
             {"p","p","p","p","p","p","p","p"},
             {" "," "," "," "," "," "," "," "},
             {" "," "," "," "," "," "," "," "},
@@ -59,17 +61,16 @@ public class MainActivity extends AppCompatActivity {
             {" "," "," "," "," "," "," "," "},
             {"P","P","P","P","P","P","P","P"},
             {"R","N","B","Q","K","B","N","R"}
-            */
-            {"k"," "," "," "," "," "," "," "},
+
+
+            /*{"k"," "," "," "," "," "," "," "},
             {" "," "," "," "," "," "," "," "},
             {" "," "," "," "," "," "," "," "},
             {" "," "," "," "," "," "," "," "},
             {" "," "," "," "," "," "," "," "},
             {" "," "," "," "," "," ","p","p"},
-            {" "," "," "," "," "," "," "," "},
-            {" "," "," "," "," "," "," ","K"}
-
-
+            {" "," "," "," "," ","p"," "," "},
+            {" "," "," "," "," "," "," ","K"}*/
 
     };
 
@@ -141,6 +142,9 @@ public class MainActivity extends AppCompatActivity {
         // draw the board.
         drawBoardPieces();
 
+        //Debugging purposes
+        Log.i("WJH", String.valueOf(kingPositionC));
+
     } // End on create.
 
     @Override
@@ -175,12 +179,11 @@ public class MainActivity extends AppCompatActivity {
             // Try this.
             try {
                 Log.i("WJH", sortMoves(posibleMoves()));
-                Object[] option={"Computer","Human"};
                 if (humanAsWhite==0) {
-                    //long startTime=System.currentTimeMillis();
+                    long startTime=System.currentTimeMillis();
                     makeMove(alphaBeta(globalDepth, 1000000, -1000000, "", 0));
-                    //long endTime=System.currentTimeMillis();
-                    //Log.i ("WJH", "That took "+(endTime-startTime)+" milliseconds");
+                    long endTime=System.currentTimeMillis();
+                    Log.i ("WJH", "That took "+(endTime-startTime)+" milliseconds");
                     flipBoard();
                 }
                 for (int i=0;i<8;i++) {
@@ -192,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
                 e.printStackTrace();
 
-                return "Pass";
+                return "Exception";
 
             }
 
@@ -265,5 +268,17 @@ public class MainActivity extends AppCompatActivity {
         pN.setText(String.valueOf(globalDepth));
 
     } // end ply minus.
+
+    public void resetGame(View view) {
+
+        Intent mStartActivity = new Intent(this, MainActivity.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(this,mPendingIntentId,
+                mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
+        System.exit(0);
+
+    }
 
 } // End MainActivity.java

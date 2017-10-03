@@ -10,15 +10,32 @@
     tools:context="com.alaskalinuxuser.beginnerchess.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:id="@+id/nextMoveButton"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:onClick="buttonNextMove"
-        android:text="Next Move Button"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="130dp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="30dp">
+
+        <Button
+            android:id="@+id/nextMoveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonNextMove"
+            android:text="Move"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="130dp" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="resetGame"
+            android:text="Reset" />
+
+    </LinearLayout>
 
     <GridLayout
         android:layout_width="wrap_content"

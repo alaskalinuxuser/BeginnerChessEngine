@@ -90,10 +90,10 @@ public class ThinkTank {
         /*
          * In theory, if there are no moves, then you are in checkmate....
          */
-        if (move.length() < 4) {
+        if (move.length() < 4 || move.charAt(0)=='-') {
             Log.i("WJH", "Checkmate.");
         } else {
-
+            Log.i("WJH", move);
             if (move.charAt(4) != 'P') {
                 chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
                 chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
@@ -482,19 +482,13 @@ public class ThinkTank {
             }
         }
         //pawn
-        if (kingPositionC>=16) {
-            try {
-                if ("p".equals(chessBoard[kingPositionC/80-1][kingPositionC%8-1])) {
-                    return false;
-                }
-            } catch (Exception e) {}
-            try {
-                if ("p".equals(chessBoard[kingPositionC/80-1][kingPositionC%8+1])) {
-                    return false;
-                }
-            } catch (Exception e) {}
-            //king
-            for (int i=-1; i<=1; i++) {
+        if (kingPositionC>15) {
+
+
+
+        }
+        //king
+        for (int i=-1; i<=1; i++) {
                 for (int j=-1; j<=1; j++) {
                     if (i!=0 || j!=0) {
                         try {
@@ -504,7 +498,6 @@ public class ThinkTank {
                         } catch (Exception e) {}
                     }
                 }
-            }
         }
         return true;
     } // End king is safe check.
