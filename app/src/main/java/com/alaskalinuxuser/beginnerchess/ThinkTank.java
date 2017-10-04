@@ -127,22 +127,38 @@ public class ThinkTank {
             }
 
             if ("0-0kr".equals(move.substring(0,5))) {
-                Log.i("WJH", "make castle king side");
-                chessBoard[7][4] = " ";
-                chessBoard[7][7] = " ";
-                chessBoard[7][6] = "K";
-                chessBoard[7][5] = "R";
-                if(isWhite){wKingMove=true;wKRookMove=true;wQRookMove=true;}
-                else {bKingMove=true;bKRookMove=true;bQRookMove=true;}
+                //Log.i("WJH", "make castle king side");
+                if(isWhite) {
+                    chessBoard[7][4] = " ";
+                    chessBoard[7][7] = " ";
+                    chessBoard[7][6] = "K";
+                    chessBoard[7][5] = "R";
+                    wKingMove=true;wKRookMove=true;wQRookMove=true;
+                } else {
+                    chessBoard[7][3] = " ";
+                    chessBoard[7][0] = " ";
+                    chessBoard[7][1] = "K";
+                    chessBoard[7][2] = "R";
+                    bKingMove=true;bKRookMove=true;bQRookMove=true;
+                }
             } else if ("0-0-0".equals(move.substring(0,5))) {
-                Log.i("WJH", "make castle queen side");
-                chessBoard[7][4] = " ";
-                chessBoard[7][0] = " ";
-                chessBoard[7][1] = " ";
-                chessBoard[7][2] = "K";
-                chessBoard[7][3] = "R";
-                if(isWhite){wKingMove=true;wQRookMove=true;wKRookMove=true;}
-                else {bKingMove=true;bQRookMove=true;bKRookMove=true;}
+                //Log.i("WJH", "make castle queen side");
+                if(isWhite) {
+                    chessBoard[7][4] = " ";
+                    chessBoard[7][0] = " ";
+                    chessBoard[7][1] = " ";
+                    chessBoard[7][2] = "K";
+                    chessBoard[7][3] = "R";
+                    wKingMove=true;wQRookMove=true;wKRookMove=true;
+                }
+                else {
+                    chessBoard[7][3] = " ";
+                    chessBoard[7][7] = " ";
+                    chessBoard[7][6] = " ";
+                    chessBoard[7][5] = "K";
+                    chessBoard[7][4] = "R";
+                    bKingMove=true;bQRookMove=true;bKRookMove=true;
+                }
             } else {
                 // Debuging only //
                 //for (int i=0;i<8;i++) {
@@ -166,18 +182,33 @@ public class ThinkTank {
 
     public static void undoMove(String move) {
         if ("0-0kr".equals(move)){
-            Log.i("WJH", "undo castle king side");
-            chessBoard[7][4] = "K";
-            chessBoard[7][7] = "R";
-            chessBoard[7][6] = " ";
-            chessBoard[7][5] = " ";
+            //Log.i("WJH", "undo castle king side");
+            if(isWhite) {
+                chessBoard[7][4] = "K";
+                chessBoard[7][7] = "R";
+                chessBoard[7][6] = " ";
+                chessBoard[7][5] = " ";
+            } else {
+                chessBoard[7][3] = "K";
+                chessBoard[7][0] = "R";
+                chessBoard[7][1] = " ";
+                chessBoard[7][2] = " ";
+            }
         } else if ("0-0-0".equals(move)){
-            Log.i("WJH", "undo castle queen side");
-            chessBoard[7][4] = "K";
-            chessBoard[7][0] = "R";
-            chessBoard[7][1] = " ";
-            chessBoard[7][2] = " ";
-            chessBoard[7][3] = " ";
+            //Log.i("WJH", "undo castle queen side");
+            if(isWhite) {
+                chessBoard[7][4] = "K";
+                chessBoard[7][0] = "R";
+                chessBoard[7][1] = " ";
+                chessBoard[7][2] = " ";
+                chessBoard[7][3] = " ";
+            } else {
+                chessBoard[7][3] = "K";
+                chessBoard[7][7] = "R";
+                chessBoard[7][6] = " ";
+                chessBoard[7][5] = " ";
+                chessBoard[7][4] = " ";
+            }
         } else if (move.charAt(4)!='P') {
             // Debuging only //
             //for (int i=0;i<8;i++) {
@@ -502,6 +533,21 @@ public class ThinkTank {
                 }
 
             } else if (!isWhite && !bKingMove) {
+                if (!bKRookMove) {
+                    if ("K".equals(chessBoard[7][3]) && "R".equals(chessBoard[7][0]) && " ".equals(chessBoard[7][1]) &&
+                            " ".equals(chessBoard[7][2])) {
+                        if (kingSafe()) {list = list + "0-0kr";}
+                        // Debugging only //Log.i("WJH", "possible castle kings side");
+                    }
+
+                }
+                if (!bQRookMove) {
+                    if ("K".equals(chessBoard[7][3]) && " ".equals(chessBoard[7][4]) && " ".equals(chessBoard[7][5]) &&
+                            " ".equals(chessBoard[7][6]) && "R".equals(chessBoard[7][7])) {
+                        if (kingSafe()) {list = list + "0-0-0";}
+                        // Debugging only //Log.i("WJH", "possible castle queens side");
+                    }
+                }
 
             }
         } catch (Exception e) {}
