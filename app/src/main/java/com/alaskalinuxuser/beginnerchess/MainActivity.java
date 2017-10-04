@@ -39,6 +39,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.alphaBeta;
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.flipBoard;
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.makeMove;
@@ -49,7 +51,6 @@ import static com.alaskalinuxuser.beginnerchess.UserInterface.drawBoardPieces;
 public class MainActivity extends AppCompatActivity {
 
     static int kingPositionC, kingPositionL, globalDepth=1, humanAsWhite=0;
-    static boolean white=true;
     static String chessBoard[][]= new String[][] {
             {"r","n","b","q","k","b","n","r"},
             {"p","p","p","p","p","p","p","p"},
@@ -60,15 +61,14 @@ public class MainActivity extends AppCompatActivity {
             {"P","P","P","P","P","P","P","P"},
             {"R","N","B","Q","K","B","N","R"}
 
-
             /*{" "," "," "," ","k"," "," "," "},
             {" "," "," "," "," "," "," "," "},
-            {" "," "," ","p","p","p","p","p"},
-            {" "," "," ","p"," "," "," ","p"},
-            {" "," "," ","p"," ","K"," "," "},
-            {" "," "," ","p"," "," "," ","p"},
-            {" "," "," ","p","p","p","p","p"},
-            {" "," "," "," "," "," "," "," "} */
+            {" "," "," "," "," "," "," "," "},
+            {" "," "," "," "," "," "," "," "},
+            {" "," ","b"," "," ","b"," "," "},
+            {"p","p","p","p","p","p","p","p"},
+            {" "," "," "," "," "," "," ","P"},
+            {" "," "," "," ","K"," "," ","R"}*/
 
     };
 
@@ -144,9 +144,10 @@ public class MainActivity extends AppCompatActivity {
         while (!"K".equals(chessBoard[kingPositionC/8][kingPositionC%8])) {kingPositionC++;}//get King's location
         while (!"k".equals(chessBoard[kingPositionL/8][kingPositionL%8])) {kingPositionL++;}//get king's location
 
+
+        //Debugging purposes //makeMove("0-0kr");
         // draw the board.
         drawBoardPieces();
-
         //Debugging purposes //Log.i("WJH", String.valueOf(kingPositionC));
 
     } // End on create.

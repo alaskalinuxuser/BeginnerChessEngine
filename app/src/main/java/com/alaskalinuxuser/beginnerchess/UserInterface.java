@@ -26,9 +26,9 @@ package com.alaskalinuxuser.beginnerchess;
 
 import static com.alaskalinuxuser.beginnerchess.MainActivity.chessBoard;
 import static com.alaskalinuxuser.beginnerchess.MainActivity.chessImage;
-import static com.alaskalinuxuser.beginnerchess.MainActivity.white;
 
 import static com.alaskalinuxuser.beginnerchess.ThinkTank.flipBoard;
+import static com.alaskalinuxuser.beginnerchess.ThinkTank.isWhite;
 
 public class UserInterface  {
 
@@ -37,7 +37,7 @@ public class UserInterface  {
         boolean flipped;
 
         // Get the board flipped accordingly for drawing.
-        if (!white) {
+        if (!isWhite) {
             flipBoard();
             flipped=true;
         } else {

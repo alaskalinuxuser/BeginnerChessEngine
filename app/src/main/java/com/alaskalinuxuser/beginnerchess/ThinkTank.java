@@ -2,11 +2,12 @@ package com.alaskalinuxuser.beginnerchess;
 
 import android.util.Log;
 
+import java.util.Arrays;
+
 import static com.alaskalinuxuser.beginnerchess.MainActivity.chessBoard;
 import static com.alaskalinuxuser.beginnerchess.MainActivity.globalDepth;
 import static com.alaskalinuxuser.beginnerchess.MainActivity.kingPositionC;
 import static com.alaskalinuxuser.beginnerchess.MainActivity.kingPositionL;
-import static com.alaskalinuxuser.beginnerchess.MainActivity.white;
 
 /*  Copyright 2017 by AlaskaLinuxUser (https://thealaskalinuxuser.wordpress.com)
 *
@@ -25,6 +26,9 @@ import static com.alaskalinuxuser.beginnerchess.MainActivity.white;
 
 public class ThinkTank {
 
+    static boolean wKingMove=false, bKingMove=false, wQRookMove=false, wKRookMove=false,
+            bQRookMove=false, bKRookMove=false, isWhite=true;
+
     public static String alphaBeta(int depth, int beta, int alpha, String move, int player) {
         //return in the form of 1234b##########
         String list=posibleMoves();
@@ -32,7 +36,7 @@ public class ThinkTank {
         list=sortMoves(list);
         player=1-player;//either 1 or 0
         for (int i=0;i<list.length();i+=5) {
-            // Debugging only //Log.i("WJH", list);
+            // Debugging only // Log.i("WJH", list);
             makeMove(list.substring(i,i+5));
             flipBoard();
             String returnString=alphaBeta(depth-1, beta, alpha, list.substring(i,i+5), player);
@@ -78,39 +82,109 @@ public class ThinkTank {
         kingPositionL=63-kingTemp;
 
         //Set our boolean for white's turn.
-        if (white) {
-            white=false;
+        if (isWhite) {
+            isWhite=false;
         } else {
-            white=true;
+            isWhite=true;
         }
 
     } // End flip board.
 
     public static void makeMove(String move) {
         /*
-         * In theory, if there are no moves, then you are in checkmate....
+         * In theory, if there are no moves, then you are in checkmate or stalemate....
          */
+        //Log.i("WJH", move);
+        boolean checkStaleMate = false;
         if (move.length() < 4 || move.charAt(0)=='-') {
-            Log.i("WJH", "Checkmate.");
-        } else {
-            // Debuging only //Log.i("WJH", move);
-            if (move.charAt(4) != 'P') {
-                chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
-                chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
-                if ("K".equals(chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))])) {
-                    kingPositionC = 8 * Character.getNumericValue(move.charAt(2)) + Character.getNumericValue(move.charAt(3));
-                }
+            Log.i("WJH", "Checkmate or stalemate.");
+            checkStaleMate = true;
+        }
+
+        if (!checkStaleMate) {
+
+            move=move.substring(0,5);
+            if(!wKingMove && isWhite) {
+                if (move.startsWith("74")) {
+                     wKingMove = true;
+                    }
+                if (move.startsWith("70")) {
+                        wQRookMove = true;
+                    }
+                if (move.startsWith("77")) {
+                        wKRookMove = true;
+                    }
+            } else if(!bKingMove && !isWhite) {
+                if (move.startsWith("74")) {
+                        bKingMove = true;
+                    }
+                if (move.startsWith("70")) {
+                        bQRookMove = true;
+                    }
+                if (move.startsWith("77")) {
+                        bKRookMove = true;
+                    }
+            }
+
+            if ("0-0kr".equals(move.substring(0,5))) {
+                Log.i("WJH", "make castle king side");
+                chessBoard[7][4] = " ";
+                chessBoard[7][7] = " ";
+                chessBoard[7][6] = "K";
+                chessBoard[7][5] = "R";
+                if(isWhite){wKingMove=true;wKRookMove=true;wQRookMove=true;}
+                else {bKingMove=true;bKRookMove=true;bQRookMove=true;}
+            } else if ("0-0-0".equals(move.substring(0,5))) {
+                Log.i("WJH", "make castle queen side");
+                chessBoard[7][4] = " ";
+                chessBoard[7][0] = " ";
+                chessBoard[7][1] = " ";
+                chessBoard[7][2] = "K";
+                chessBoard[7][3] = "R";
+                if(isWhite){wKingMove=true;wQRookMove=true;wKRookMove=true;}
+                else {bKingMove=true;bQRookMove=true;bKRookMove=true;}
             } else {
-                //if pawn promotion
-                chessBoard[1][Character.getNumericValue(move.charAt(0))] = " ";
-                chessBoard[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(3));
+                // Debuging only //
+                //for (int i=0;i<8;i++) {
+                    //Log.i ("WJH", Arrays.toString(chessBoard[i]));
+                //}
+                //Log.i("WJH", move + " is move.");
+                if (move.charAt(4) != 'P') {
+                    chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
+                    chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
+                    if ("K".equals(chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))])) {
+                        kingPositionC = 8 * Character.getNumericValue(move.charAt(2)) + Character.getNumericValue(move.charAt(3));
+                    }
+                } else {
+                    //if pawn promotion
+                    chessBoard[1][Character.getNumericValue(move.charAt(0))] = " ";
+                    chessBoard[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(3));
+                }
             }
         }
     } // End makeMove
 
     public static void undoMove(String move) {
-        if (move.charAt(4)!='P') {
-            chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))]=chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
+        if ("0-0kr".equals(move)){
+            Log.i("WJH", "undo castle king side");
+            chessBoard[7][4] = "K";
+            chessBoard[7][7] = "R";
+            chessBoard[7][6] = " ";
+            chessBoard[7][5] = " ";
+        } else if ("0-0-0".equals(move)){
+            Log.i("WJH", "undo castle queen side");
+            chessBoard[7][4] = "K";
+            chessBoard[7][0] = "R";
+            chessBoard[7][1] = " ";
+            chessBoard[7][2] = " ";
+            chessBoard[7][3] = " ";
+        } else if (move.charAt(4)!='P') {
+            // Debuging only //
+            //for (int i=0;i<8;i++) {
+                //Log.i ("WJH", Arrays.toString(chessBoard[i]));
+            //}
+            chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))]=
+                    chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
             chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))]=String.valueOf(move.charAt(4));
             if ("K".equals(chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))])) {
                 kingPositionC=8*Character.getNumericValue(move.charAt(0))+Character.getNumericValue(move.charAt(1));
@@ -408,7 +482,30 @@ public class ThinkTank {
                 } catch (Exception e) {}
             }
         }
-        //need to add castling later
+        /* Castle */
+        try {
+            if (isWhite && !wKingMove) {
+                if (!wKRookMove) {
+                    if ("K".equals(chessBoard[7][4]) && "R".equals(chessBoard[7][7]) && " ".equals(chessBoard[7][6]) &&
+                            " ".equals(chessBoard[7][5])) {
+                        if (kingSafe()) {list = list + "0-0kr";}
+                        // Debugging only //Log.i("WJH", "possible castle kings side");
+                    }
+
+                }
+                if (!wQRookMove) {
+                    if ("K".equals(chessBoard[7][4]) && " ".equals(chessBoard[7][1]) && " ".equals(chessBoard[7][2]) &&
+                            " ".equals(chessBoard[7][3]) && "R".equals(chessBoard[7][0])) {
+                        if (kingSafe()) {list = list + "0-0-0";}
+                        // Debugging only //Log.i("WJH", "possible castle queens side");
+                    }
+                }
+
+            } else if (!isWhite && !bKingMove) {
+
+            }
+        } catch (Exception e) {}
+
         return list;
     } // End possible king moves.
 
