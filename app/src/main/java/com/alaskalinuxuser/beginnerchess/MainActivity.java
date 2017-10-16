@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Try this.
             try {
-                moveOptions=sortMoves(posibleMoves());
+                moveOptions=sortMoves(posibleMoves()).toString();
                 if (humanAsWhite==0) {
                     long startTime=System.currentTimeMillis();
                     makeMove(alphaBeta(globalDepth, 1000000, -1000000, "", 0));
