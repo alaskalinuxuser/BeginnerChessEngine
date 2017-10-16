@@ -227,29 +227,30 @@ public class ThinkTank {
         }
     } // End undo move.
 
-    public static String posibleMoves() {
-        String list="";
+    public static StringBuffer posibleMoves() {
+        StringBuffer list=new StringBuffer();
         for (int i=0; i<64; i++) {
             switch (chessBoard[i/8][i%8]) {
-                case "N": list+=posibleN(i);
+                case "N": list.append(posibleN(i));
                     break;
-                case "R": list+=posibleR(i);
+                case "R": list.append(posibleR(i));
                     break;
-                case "P": list+=posibleP(i);
+                case "P": list.append(posibleP(i));
                     break;
-                case "B": list+=posibleB(i);
+                case "B": list.append(posibleB(i));
                     break;
-                case "Q": list+=posibleQ(i);
+                case "Q": list.append(posibleQ(i));
                     break;
-                case "K": list+=posibleK(i);
+                case "K": list.append(posibleK(i));
                     break;
             }
         }
         return list;//x1,y1,x2,y2,captured piece
     } // End possible moves.
 
-    public static String posibleP(int i) {
-        String list="", oldPiece;
+    public static StringBuffer posibleP(int i) {
+        StringBuffer list=new StringBuffer();
+        String oldPiece;
         int r=i/8, c=i%8;
         for (int j=-1; j<=1; j+=2) {
             try {//capture
@@ -258,7 +259,11 @@ public class ThinkTank {
                     chessBoard[r][c]=" ";
                     chessBoard[r-1][c+j]="P";
                     if (kingSafe()) {
-                        list=list+r+c+(r-1)+(c+j)+oldPiece;
+                    	list.append(r)
+                            .append(c)
+                            .append(r-1)
+                            .append(c+j)
+                            .append(oldPiece);
                     }
                     chessBoard[r][c]="P";
                     chessBoard[r-1][c+j]=oldPiece;
@@ -287,7 +292,11 @@ public class ThinkTank {
                 chessBoard[r][c]=" ";
                 chessBoard[r-1][c]="P";
                 if (kingSafe()) {
-                    list=list+r+c+(r-1)+c+oldPiece;
+                	list.append(r)
+                         .append(c)
+                         .append(r-1)
+                         .append(c)
+                         .append(oldPiece);
                 }
                 chessBoard[r][c]="P";
                 chessBoard[r-1][c]=oldPiece;
@@ -302,7 +311,11 @@ public class ThinkTank {
                     chessBoard[r-1][c]=temp[k];
                     if (kingSafe()) {
                         //column1,column2,captured-piece,new-piece,P
-                        list=list+c+c+oldPiece+temp[k]+"P";
+                        list.append(c)
+                            .append(c)
+                            .append(oldPiece)
+                            .append(temp[k])
+                            .append("P");
                     }
                     chessBoard[r][c]="P";
                     chessBoard[r-1][c]=oldPiece;
@@ -315,6 +328,11 @@ public class ThinkTank {
                 chessBoard[r][c]=" ";
                 chessBoard[r-2][c]="P";
                 if (kingSafe()) {
+                	list.append(r)
+                        .append(c)
+                        .append(r-2)
+                        .append(c)
+                        .append(oldPiece);
                     list=list+r+c+(r-2)+c+oldPiece;
                 }
                 chessBoard[r][c]="P";
@@ -324,8 +342,9 @@ public class ThinkTank {
         return list;
     } // End Possible pawn moves.
 
-    public static String posibleR(int i) {
-        String list="", oldPiece;
+    public static StringBuffer posibleR(int i) {
+        StringBuffer list=new StringBuffer();
+        String oldPiece;
         int r=i/8, c=i%8;
         int temp=1;
         for (int j=-1; j<=1; j+=2) {
@@ -336,7 +355,11 @@ public class ThinkTank {
                     chessBoard[r][c]=" ";
                     chessBoard[r][c+temp*j]="R";
                     if (kingSafe()) {
-                        list=list+r+c+r+(c+temp*j)+oldPiece;
+                    	list.append(r)
+                            .append(c)
+                            .append(r)
+                            .append(c+temp*j)
+                            .append(oldPiece);
                     }
                     chessBoard[r][c]="R";
                     chessBoard[r][c+temp*j]=oldPiece;
@@ -347,6 +370,11 @@ public class ThinkTank {
                     chessBoard[r][c]=" ";
                     chessBoard[r][c+temp*j]="R";
                     if (kingSafe()) {
+                    	list.append(r)
+                            .append(c)
+                            .append(r)
+                            .append(c+temp*j)
+                            .append(oldPiece);
                         list=list+r+c+r+(c+temp*j)+oldPiece;
                     }
                     chessBoard[r][c]="R";
@@ -361,6 +389,11 @@ public class ThinkTank {
                     chessBoard[r][c]=" ";
                     chessBoard[r+temp*j][c]="R";
                     if (kingSafe()) {
+                    	list.append(r)
+                            .append(c)
+                            .append(r+temp*j)
+                            .append(c)
+                            .append(oldPiece);
                         list=list+r+c+(r+temp*j)+c+oldPiece;
                     }
                     chessBoard[r][c]="R";
@@ -372,7 +405,11 @@ public class ThinkTank {
                     chessBoard[r][c]=" ";
                     chessBoard[r+temp*j][c]="R";
                     if (kingSafe()) {
-                        list=list+r+c+(r+temp*j)+c+oldPiece;
+                    	list.append(r)
+                            .append(c)
+                            .append(r+temp*j)
+                            .append(c)
+                            .append(oldPiece);
                     }
                     chessBoard[r][c]="R";
                     chessBoard[r+temp*j][c]=oldPiece;
@@ -383,8 +420,9 @@ public class ThinkTank {
         return list;
     } // End possible Rook moves.
 
-    public static String posibleN(int i) {
-        String list="", oldPiece;
+    public static StringBuffer posibleN(int i) {
+        StringBuffer list=new StringBuffer();
+        String oldPiece;
         int r=i/8, c=i%8;
         for (int j=-1; j<=1; j+=2) {
             for (int k=-1; k<=1; k+=2) {
@@ -394,7 +432,11 @@ public class ThinkTank {
                         chessBoard[r][c]=" ";
                         chessBoard[r+j][c+k*2]="N";
                         if (kingSafe()) {
-                            list=list+r+c+(r+j)+(c+k*2)+oldPiece;
+                            list.append(r)
+                            	.append(c)
+                            	.append(r+j)
+                            	.append(c+k*2)
+                            	.append(oldPiece);
                         }
                         chessBoard[r][c]="N";
                         chessBoard[r+j][c+k*2]=oldPiece;
@@ -406,7 +448,11 @@ public class ThinkTank {
                         chessBoard[r][c]=" ";
                         chessBoard[r+j*2][c+k]="N";
                         if (kingSafe()) {
-                            list=list+r+c+(r+j*2)+(c+k)+oldPiece;
+                        	list.append(r)
+                            	.append(c)
+                            	.append(r+j*2)
+                            	.append(c+k)
+                            	.append(oldPiece);
                         }
                         chessBoard[r][c]="N";
                         chessBoard[r+j*2][c+k]=oldPiece;
@@ -417,8 +463,9 @@ public class ThinkTank {
         return list;
     } // End possible knight moves.
 
-    public static String posibleB(int i) {
-        String list="", oldPiece;
+    public static StringBuffer posibleB(int i) {
+        StringBuffer list=new StringBuffer();
+        String oldPiece;
         int r=i/8, c=i%8;
         int temp=1;
         for (int j=-1; j<=1; j+=2) {
@@ -430,7 +477,11 @@ public class ThinkTank {
                         chessBoard[r][c]=" ";
                         chessBoard[r+temp*j][c+temp*k]="B";
                         if (kingSafe()) {
-                            list=list+r+c+(r+temp*j)+(c+temp*k)+oldPiece;
+                        	list.append(r)
+                            	.append(c)
+                            	.append(r+temp*j)
+                            	.append(c+temp*k)
+                            	.append(oldPiece);
                         }
                         chessBoard[r][c]="B";
                         chessBoard[r+temp*j][c+temp*k]=oldPiece;
@@ -441,7 +492,11 @@ public class ThinkTank {
                         chessBoard[r][c]=" ";
                         chessBoard[r+temp*j][c+temp*k]="B";
                         if (kingSafe()) {
-                            list=list+r+c+(r+temp*j)+(c+temp*k)+oldPiece;
+                        	list.append(r)
+                            	.append(c)
+                            	.append(r+temp*j)
+                            	.append(c+temp*k)
+                            	.append(oldPiece);
                         }
                         chessBoard[r][c]="B";
                         chessBoard[r+temp*j][c+temp*k]=oldPiece;
@@ -453,8 +508,9 @@ public class ThinkTank {
         return list;
     } // End possible Bishop moves.
 
-    public static String posibleQ(int i) {
-        String list="", oldPiece;
+    public static StringBuffer posibleQ(int i) {
+        StringBuffer list=new StringBuffer();
+        String oldPiece;
         int r=i/8, c=i%8;
         int temp=1;
         for (int j=-1; j<=1; j++) {
@@ -467,7 +523,11 @@ public class ThinkTank {
                             chessBoard[r][c]=" ";
                             chessBoard[r+temp*j][c+temp*k]="Q";
                             if (kingSafe()) {
-                                list=list+r+c+(r+temp*j)+(c+temp*k)+oldPiece;
+                            	list.append(r)
+                            		.append(c)
+                            		.append(r+temp*j)
+                            		.append(c+temp*k)
+                            		.append(oldPiece);
                             }
                             chessBoard[r][c]="Q";
                             chessBoard[r+temp*j][c+temp*k]=oldPiece;
@@ -478,7 +538,11 @@ public class ThinkTank {
                             chessBoard[r][c]=" ";
                             chessBoard[r+temp*j][c+temp*k]="Q";
                             if (kingSafe()) {
-                                list=list+r+c+(r+temp*j)+(c+temp*k)+oldPiece;
+                            	list.append(r)
+                            		.append(c)
+                            		.append(r+temp*j)
+                            		.append(c+temp*k)
+                            		.append(oldPiece);
                             }
                             chessBoard[r][c]="Q";
                             chessBoard[r+temp*j][c+temp*k]=oldPiece;
@@ -491,8 +555,9 @@ public class ThinkTank {
         return list;
     } // End possible Queen moves.
 
-    public static String posibleK(int i) {
-        String list="", oldPiece;
+    public static StringBuffer posibleK(int i) {
+        StringBuffer list=new StringBuffer();
+        String oldPiece;
         int r=i/8, c=i%8;
         for (int j=0; j<9; j++) {
             if (j!=4) {
@@ -504,7 +569,11 @@ public class ThinkTank {
                         int kingTemp=kingPositionC;
                         kingPositionC=i+(j/3)*8+j%3-9;
                         if (kingSafe()) {
-                            list=list+r+c+(r-1+j/3)+(c-1+j%3)+oldPiece;
+                        	list.append(r)
+                            	.append(c)
+                            	.append(r-1+j/3)
+                            	.append(c-1+j%3)
+                            	.append(oldPiece);
                         }
                         chessBoard[r][c]="K";
                         chessBoard[r-1+j/3][c-1+j%3]=oldPiece;
@@ -519,7 +588,7 @@ public class ThinkTank {
                 if (!wKRookMove) {
                     if ("K".equals(chessBoard[7][4]) && "R".equals(chessBoard[7][7]) && " ".equals(chessBoard[7][6]) &&
                             " ".equals(chessBoard[7][5])) {
-                        if (kingSafe()) {list = list + "0-0kr";}
+                        if (kingSafe()) {list.append("0-0kr");}
                         // Debugging only //Log.i("WJH", "possible castle kings side");
                     }
 
@@ -527,7 +596,7 @@ public class ThinkTank {
                 if (!wQRookMove) {
                     if ("K".equals(chessBoard[7][4]) && " ".equals(chessBoard[7][1]) && " ".equals(chessBoard[7][2]) &&
                             " ".equals(chessBoard[7][3]) && "R".equals(chessBoard[7][0])) {
-                        if (kingSafe()) {list = list + "0-0-0";}
+                        if (kingSafe()) {list.append("0-0-0");}
                         // Debugging only //Log.i("WJH", "possible castle queens side");
                     }
                 }
@@ -536,7 +605,7 @@ public class ThinkTank {
                 if (!bKRookMove) {
                     if ("K".equals(chessBoard[7][3]) && "R".equals(chessBoard[7][0]) && " ".equals(chessBoard[7][1]) &&
                             " ".equals(chessBoard[7][2])) {
-                        if (kingSafe()) {list = list + "0-0kr";}
+                        if (kingSafe()) {list.append("0-0kr");}
                         // Debugging only //Log.i("WJH", "possible castle kings side");
                     }
 
@@ -544,7 +613,7 @@ public class ThinkTank {
                 if (!bQRookMove) {
                     if ("K".equals(chessBoard[7][3]) && " ".equals(chessBoard[7][4]) && " ".equals(chessBoard[7][5]) &&
                             " ".equals(chessBoard[7][6]) && "R".equals(chessBoard[7][7])) {
-                        if (kingSafe()) {list = list + "0-0-0";}
+                        if (kingSafe()) {list.append("0-0-0");}
                         // Debugging only //Log.i("WJH", "possible castle queens side");
                     }
                 }
@@ -555,24 +624,25 @@ public class ThinkTank {
         return list;
     } // End possible king moves.
 
-    public static String sortMoves(String list) {
+    public static StringBuffer sortMoves(StringBuffer list) {
         int[] score=new int [list.length()/5];
         for (int i=0;i<list.length();i+=5) {
             makeMove(list.substring(i, i+5));
             score[i/5]=-Rating.rating(-1, 0);
             undoMove(list.substring(i, i+5));
         }
-        String newListA="", newListB=list;
+        StringBuffer newListA=new StringBuffer();
+        StringBuffer newListB=list;
         for (int i=0;i<Math.min(6, list.length()/5);i++) {//first few moves only
             int max=-1000000, maxLocation=0;
             for (int j=0;j<list.length()/5;j++) {
                 if (score[j]>max) {max=score[j]; maxLocation=j;}
             }
             score[maxLocation]=-1000000;
-            newListA+=list.substring(maxLocation*5,maxLocation*5+5);
-            newListB=newListB.replace(list.substring(maxLocation*5,maxLocation*5+5), "");
+            newListA.append(list.substring(maxLocation*5,maxLocation*5+5));
+            newListB=newListB.replace(maxLocation*5, maxLocation*5+5, "");
         }
-        return newListA+newListB;
+        return newListA.append(newListB);
     } // End sort moves.
 
     public static boolean kingSafe() {
